@@ -1,0 +1,50 @@
+---
+title: "Mapping the results of the 2017 Parliamentary elections outside Bulgaria"
+output: html_notebook
+---
+
+Data source: https://results.cik.bg/pi2017/csv.html 
+
+Data analysis: Vesela Grozeva
+
+The raw data has been processed and synthesized in a dataframe called "ballots_city." It contains results aggregated by location as certain locations have more than one voting section. Only the results for the main parties are shown - these are:
+
+* DA Bulgaria
+* GERB
+* BSP
+* Patrioti
+* Volia
+* Reformatorski Bloc (RB)
+* DPS
+* DOST
+
+The "total votes" variable indicates the total number of votes cast, including votes that were deemed invalid or that indicated that the voter does not support any party. 
+
+Map use: click on map to zoom in and click on the pins to display the statistics for that location.
+
+*Votes by count:*
+
+
+```{r}
+require(leaflet)
+load("ballots_city") 
+popup_text <- paste0("Location: ", ballots_city$locations, "<br>Total votes: ", ballots_city$tot_ballots_bycity, "<br>DA Bulgaria: ", ballots_city$P16, "<br>GERB: ", ballots_city$P11, "<br>BSP: ", ballots_city$P10, "<br>Patrioti: ", ballots_city$P17, "<br>Volia: ", ballots_city$P6, "<br>RB: ", ballots_city$P21, "<br>DPS: ", ballots_city$P9, "<br>DOST: ", ballots_city$P13)
+
+leaflet(ballots_city) %>% addTiles() %>% addMarkers(popup=popup_text) 
+
+```
+
+*Votes by percentage:*
+
+
+```{r}
+popup_text <- paste0("Location: ", ballots_city$locations, "<br>Total votes: ", ballots_city$tot_ballots_bycity, "<br>DA Bulgaria: ", ballots_city$P16_pct, "<br>GERB: ", ballots_city$P11_pct, "<br>BSP: ", ballots_city$P10_pct, "<br>Patrioti: ", ballots_city$P17_pct, "<br>Volia: ", ballots_city$P6_pct, "<br>RB: ", ballots_city$P21_pct, "<br>DPS: ", ballots_city$P9_pct, "<br>DOST: ", ballots_city$P13_pct)
+
+leaflet(ballots_city) %>% addTiles() %>% addMarkers(popup=popup_text) 
+```
+
+
+
+
+
+

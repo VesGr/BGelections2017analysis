@@ -1,0 +1,79 @@
+---
+title: "Examining the performance of DA Bulgaria in the 2017 Parliamentary elections outside Bulgaria"
+output: html_notebook
+---
+
+Data source: https://results.cik.bg/pi2017/csv.html 
+
+Data analysis: Vesela Grozeva
+
+Objective: Examine which locations favored "DA Bulgaria." 
+
+# Aggregate performance in sections abroad, excluding Turkey
+
+
+```{r}
+load("ballots_agg")
+kable(ballots_agg, format.args = list(big.mark = ","), align="c", col.names=c("Valid votes", "Votes per party", "Party No", "Party Name", "Percentage of valid votes")) 
+
+```
+
+```{r}
+ggplot(data=ballots_agg, aes(y=agg_votes_perc, x=reorder(party_names, -agg_votes_perc))) + geom_bar(stat="identity") + 
+            theme_minimal() + 
+            theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+            labs(title="Composition of Bulgaria's foreign vote, outside of Turkey", x="Party", y="Percent of valid votes cast")
+```
+
+"DA Bulgaria" gathered 13.8% of the total vote outside Bulgaria (excluding Turkey) and was 3rd after GERB and BSP.
+
+# "DA Bulgaria" performance by country
+
+Which countries garnered the most support for "DA Bulgaria"? Variable "votes_perc_bycountry" indicates the percent of valid votes cast for 
+"DA Bulgaria" by country. 
+
+```{r}
+load("ballots_country")
+ballots_country <- filter(ballots_country, party_id=="P16")
+column_names <- c("Country", "Party No", "Party Name", "Total votes", "Valid votes", "Votes per party", "Percentage of valid votes" )
+kable(ballots_country[order(-ballots_country$votes_perc_bycountry), ], align="c", col.names=column_names)
+```
+
+```{r}
+ggplot(data=ballots_country, aes(y=votes_perc_bycountry, x=reorder(country, -votes_perc_bycountry))) + geom_bar(stat="identity") + 
+            theme_minimal() + 
+            theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+            labs(title="Percent of the vote earned by DA Bulgaria by country", x="Party", y="Percent of valid votes cast")
+```
+
+# "DA Bulgaria" performance by city
+
+Which cities garnered the most support for "DA Bulgaria"? Variable "votes_perc_bycity" indicates the percent of valid votes cast for 
+"DA Bulgaria" by country. 
+
+```{r}
+load("ballots_city2")
+ballots_city <- filter(ballots_city2, party_id=="P16")
+column_names <- c("City", "Country", "Party No", "Party Name", "Total votes", "Valid votes", "Votes per party", "Percentage of valid votes" ) 
+kable(ballots_city[order(-ballots_city$votes_perc_bycity), ], align="c", col.names = column_names) 
+```
+
+
+```{r}
+ballots_city_first50 <- ballots_city[order(-ballots_city$votes_perc_bycity), ][c(1:50) , ]
+ggplot(data=ballots_city_first50, aes(y=votes_perc_bycity, x=reorder(city, -votes_perc_bycity))) + geom_bar(stat="identity") + 
+            theme_minimal() + 
+            theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+            labs(title="DA Bulgaria by city for the 50 cities with highest support", x="Party", y="Percent of valid votes cast")
+```
+
+
+```{r}
+ballots_city_last50 <- ballots_city[order(-ballots_city$votes_perc_bycity), ][c(242:292) , ]
+ggplot(data=ballots_city_last50, aes(y=votes_perc_bycity, x=reorder(city, -votes_perc_bycity))) + geom_bar(stat="identity") + 
+            theme_minimal() + 
+            theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+            labs(title="DA Bulgaria by city for the 50 cities with weakest support", x="Party", y="Percent of valid votes cast")
+```
+
+

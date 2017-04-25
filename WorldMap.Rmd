@@ -3,11 +3,14 @@ title: "Mapping the results of the 2017 Parliamentary elections outside Bulgaria
 output: html_notebook
 ---
 
+Author: Vesela Grozeva
+
 Data source: https://results.cik.bg/pi2017/csv.html 
 
-Data analysis: Vesela Grozeva
+Data processing: https://github.com/VesGr/BGelections2017analysis 
 
-The raw data has been processed and synthesized in a dataframe called "ballots_city." It contains results aggregated by location as certain locations have more than one voting section. Only the results for the main parties are shown - these are:
+
+The raw data has been processed and synthesized in a dataframe called "ballots_city." It contains results aggregated by location as certain locations have more than one voting section. Only the results for the main political parties are shown - these parties are:
 
 * DA Bulgaria
 * GERB

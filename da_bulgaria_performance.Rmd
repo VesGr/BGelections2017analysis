@@ -3,9 +3,11 @@ title: "Examining the performance of DA Bulgaria in the 2017 Parliamentary elect
 output: html_notebook
 ---
 
+Author: Vesela Grozeva
+
 Data source: https://results.cik.bg/pi2017/csv.html 
 
-Data analysis: Vesela Grozeva
+Data processing: https://github.com/VesGr/BGelections2017analysis 
 
 Objective: Examine which locations favored "DA Bulgaria." 
 
@@ -13,6 +15,8 @@ Objective: Examine which locations favored "DA Bulgaria."
 
 
 ```{r}
+require(tidyverse)
+require(knitr)
 load("ballots_agg")
 kable(ballots_agg, format.args = list(big.mark = ","), align="c", col.names=c("Valid votes", "Votes per party", "Party No", "Party Name", "Percentage of valid votes")) 
 
@@ -22,7 +26,7 @@ kable(ballots_agg, format.args = list(big.mark = ","), align="c", col.names=c("V
 ggplot(data=ballots_agg, aes(y=agg_votes_perc, x=reorder(party_names, -agg_votes_perc))) + geom_bar(stat="identity") + 
             theme_minimal() + 
             theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-            labs(title="Composition of Bulgaria's foreign vote, outside of Turkey", x="Party", y="Percent of valid votes cast")
+            labs(title="Composition of Bulgaria's foreign vote, excluding Turkey", x="Party", y="Percent of valid votes cast")
 ```
 
 "DA Bulgaria" gathered 13.8% of the total vote outside Bulgaria (excluding Turkey) and was 3rd after GERB and BSP.
@@ -43,7 +47,7 @@ kable(ballots_country[order(-ballots_country$votes_perc_bycountry), ], align="c"
 ggplot(data=ballots_country, aes(y=votes_perc_bycountry, x=reorder(country, -votes_perc_bycountry))) + geom_bar(stat="identity") + 
             theme_minimal() + 
             theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-            labs(title="Percent of the vote earned by DA Bulgaria by country", x="Party", y="Percent of valid votes cast")
+            labs(title="Percent of the vote earned by DA Bulgaria by country", x="Country", y="Percent of valid votes cast")
 ```
 
 # "DA Bulgaria" performance by city
@@ -64,7 +68,7 @@ ballots_city_first50 <- ballots_city[order(-ballots_city$votes_perc_bycity), ][c
 ggplot(data=ballots_city_first50, aes(y=votes_perc_bycity, x=reorder(city, -votes_perc_bycity))) + geom_bar(stat="identity") + 
             theme_minimal() + 
             theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-            labs(title="DA Bulgaria by city for the 50 cities with highest support", x="Party", y="Percent of valid votes cast")
+            labs(title="DA Bulgaria by city for the 50 cities with highest support", x="City", y="Percent of valid votes cast")
 ```
 
 
@@ -73,7 +77,7 @@ ballots_city_last50 <- ballots_city[order(-ballots_city$votes_perc_bycity), ][c(
 ggplot(data=ballots_city_last50, aes(y=votes_perc_bycity, x=reorder(city, -votes_perc_bycity))) + geom_bar(stat="identity") + 
             theme_minimal() + 
             theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-            labs(title="DA Bulgaria by city for the 50 cities with weakest support", x="Party", y="Percent of valid votes cast")
+            labs(title="DA Bulgaria by city for the 50 cities with weakest support", x="City", y="Percent of valid votes cast")
 ```
 
 
